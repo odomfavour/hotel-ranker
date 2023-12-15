@@ -5,7 +5,7 @@ import { BsStar, BsStarFill } from 'react-icons/bs';
 import { FaArrowLeftLong } from 'react-icons/fa6';
 import MainLayout from '../layouts/MainLayout';
 
-const HotelDetailPage = () => {
+const DetailPage = () => {
   const { id } = useParams();
   const hotel = useSelector((state) =>
     state.hotels.find((h) => h.id === parseInt(id))
@@ -75,4 +75,4 @@ const HotelDetailPage = () => {
   );
 };
 
-export default HotelDetailPage;
+export default DetailPage;
