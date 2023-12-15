@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Index';
+
 import HotelDetailPage from './pages/hotelDetailPage';
 
 function App() {
