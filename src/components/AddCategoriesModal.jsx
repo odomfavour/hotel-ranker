@@ -67,14 +67,13 @@ const AddCategoriesModal = ({ showModal, handleClose, categoryToEdit }) => {
     e.preventDefault();
 
     if (!validateForm()) {
-      // If there are validation errors, prevent form submission
       return;
     }
 
     const categoryData = {
       label: category.label,
       value: category.value,
-      id: category.value, // Consider using a more reliable way to generate an ID
+      id: category.value,
     };
 
     if (categoryToEdit) {

@@ -51,7 +51,6 @@ const AddHotelModal = ({ showModal, handleClose, hotelToEdit }) => {
 
   useEffect(() => {
     if (hotelToEdit) {
-      // If editing an existing hotel, populate the form with its details
       setHotelInfo(hotelToEdit);
     }
   }, [hotelToEdit]);

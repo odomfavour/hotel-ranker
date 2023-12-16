@@ -47,11 +47,7 @@ const hotelsSlice = createSlice({
       saveState(state);
     },
     deleteHotel: (state, action) => {
-      console.log(state);
-      console.log(action);
-      //   return state.filter((hotel) => hotel.id !== action.payload);
       const newState = state.filter((hotel) => hotel.id !== action.payload.id);
-      console.log(newState);
       saveState(newState);
       return newState;
     },
@@ -60,12 +56,10 @@ const hotelsSlice = createSlice({
         (hotel) => hotel.id === action.payload.id
       );
       if (hotelIndex !== -1) {
-        // Update the existing hotel with the new data
         state[hotelIndex] = action.payload;
         saveState(state);
       }
     },
-    // Other CRUD operations...
   },
 });
 

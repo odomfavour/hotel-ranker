@@ -148,7 +148,7 @@ const Index = () => {
                               flexDirection: {
                                 lg: 'row',
                                 md: 'row',
-                                sm: 'column-reverse',
+                                sm: 'row',
                                 xs: 'column-reverse',
                               },
                             }}
