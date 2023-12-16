@@ -85,9 +85,17 @@ const Index = () => {
           </Typography>
         </Box>
         <Container>
-          <div>
-            <h2>Hotel List</h2>
-            <p>Filter</p>
+          <Box>
+            <Typography color="#222222" fontSize="30px" mt="20px">
+              Hotel List
+            </Typography>
+            <Typography my="20px" fontWeight="300" color="#222222">
+              Filter through different categories of Hotels. You can also add a
+              new hotel using the floating button on the right
+            </Typography>
+            <Typography fontWeight="500" color="#222222">
+              Filter
+            </Typography>
             {filterOptions.map((option) => (
               <Button
                 key={option.value}
@@ -300,7 +308,7 @@ const Index = () => {
                 Create category
               </Button>
             </Box>
-          </div>
+          </Box>
 
           <Box
             sx={{
@@ -317,8 +325,8 @@ const Index = () => {
                 background: '#24ab70',
                 boxShadow: '0px 8px 8px 0 rgba(34, 34, 34, 0.4)',
                 '&:hover': {
-                  backgroundColor: '#208e63', // Change the background color on hover
-                  boxShadow: '0px 8px 8px 0 rgba(34, 34, 34, 0.6)', // Adjust the boxShadow on hover
+                  backgroundColor: '#208e63',
+                  boxShadow: '0px 8px 8px 0 rgba(34, 34, 34, 0.6)',
                 },
               }}
               onClick={() => setOpenModal(true)}
