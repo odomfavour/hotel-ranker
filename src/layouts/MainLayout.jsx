@@ -5,9 +5,9 @@ import { Box } from '@mui/material';
 
 const MainLayout = ({ children }) => {
   return (
-    <Box>
+    <Box sx={{ position: 'relative' }}>
       <Header />
-      {children}
+      <Box pb="100px">{children}</Box>
       <Footer />
     </Box>
   );
