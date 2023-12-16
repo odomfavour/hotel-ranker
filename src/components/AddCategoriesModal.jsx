@@ -1,5 +1,4 @@
-/* eslint-disable react/prop-types */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -10,6 +9,8 @@ import {
   addCategory,
   editCategory,
 } from '../features/categories/categoriesSlice';
+import { openGenModal } from '../features/modal/modalSlice';
+import PropTypes from 'prop-types';
 
 const style = {
   position: 'absolute',
@@ -26,26 +27,74 @@ const style = {
 
 const AddCategoriesModal = ({ showModal, handleClose, categoryToEdit }) => {
   const dispatch = useDispatch();
-  const [categoryName, setCategoryName] = useState(
-    categoryToEdit ? categoryToEdit.label : ''
-  );
-  const [categoryValue, setCategoryValue] = useState(
-    categoryToEdit ? categoryToEdit.value : ''
-  );
+  const [category, setCategory] = useState({
+    label: '',
+    value: '',
+  });
+  const [formErrors, setFormErrors] = useState({});
 
-  const handleSave = () => {
+  useEffect(() => {
+    if (categoryToEdit) {
+      setCategory({
+        label: categoryToEdit.label,
+        value: categoryToEdit.value,
+      });
+    } else {
+      setCategory({
+        label: '',
+        value: '',
+      });
+    }
+  }, [categoryToEdit]);
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!category.label.trim()) {
+      errors.label = 'Category Label is required';
+    }
+
+    if (!category.value.trim()) {
+      errors.value = 'Category Value is required';
+    }
+
+    setFormErrors(errors);
+
+    return Object.keys(errors).length === 0;
+  };
+
+  const handleSave = (e) => {
+    e.preventDefault();
+
+    if (!validateForm()) {
+      // If there are validation errors, prevent form submission
+      return;
+    }
+
     const categoryData = {
-      label: categoryName,
-      value: categoryValue,
-      id: categoryValue,
+      label: category.label,
+      value: category.value,
+      id: category.value, // Consider using a more reliable way to generate an ID
     };
 
     if (categoryToEdit) {
       dispatch(
         editCategory({ oldCategory: categoryToEdit, newCategory: categoryData })
       );
+      dispatch(
+        openGenModal({
+          alertType: 'success',
+          alertMessage: 'Category Editted Successfully',
+        })
+      );
     } else {
       dispatch(addCategory(categoryData));
+      dispatch(
+        openGenModal({
+          alertType: 'success',
+          alertMessage: 'Category Added Successfully',
+        })
+      );
     }
     handleClose();
   };
@@ -67,6 +116,10 @@ const AddCategoriesModal = ({ showModal, handleClose, categoryToEdit }) => {
           >
             {categoryToEdit ? 'Edit Category' : 'Add Category'}
           </Typography>
+          <Typography my="15px" fontWeight="300" color="#24a370">
+            Please follow this convention: Category Label: 3 Star, Category
+            Value: 3
+          </Typography>
           <form onSubmit={handleSave}>
             <TextField
               autoFocus
@@ -74,21 +127,39 @@ const AddCategoriesModal = ({ showModal, handleClose, categoryToEdit }) => {
               label="Category Label"
               fullWidth
               placeholder="4 star"
-              value={categoryName}
-              onChange={(e) => setCategoryName(e.target.value)}
+              value={category.label}
+              onChange={(e) =>
+                setCategory((prevCategory) => ({
+                  ...prevCategory,
+                  label: e.target.value,
+                }))
+              }
+              error={formErrors.label}
+              helperText={formErrors.label}
             />
             <TextField
               margin="dense"
               label="Category Value"
               fullWidth
               placeholder="4"
-              value={categoryValue}
-              onChange={(e) => setCategoryValue(e.target.value)}
+              value={category.value}
+              onChange={(e) =>
+                setCategory((prevCategory) => ({
+                  ...prevCategory,
+                  value: e.target.value,
+                }))
+              }
+              error={formErrors.value}
+              helperText={formErrors.value}
             />
             <Box
               sx={{ display: 'flex', justifyContent: 'flex-end', mt: '20px' }}
             >
-              <Button variant="contained" type="submit">
+              <Button
+                variant="contained"
+                type="submit"
+                sx={{ background: '#24a370' }}
+              >
                 {categoryToEdit ? 'Save Changes' : 'Add Category'}
               </Button>
             </Box>
@@ -97,6 +168,16 @@ const AddCategoriesModal = ({ showModal, handleClose, categoryToEdit }) => {
       </Modal>
     </div>
   );
+};
+
+AddCategoriesModal.propTypes = {
+  showModal: PropTypes.bool.isRequired,
+  handleClose: PropTypes.func.isRequired,
+  categoryToEdit: PropTypes.shape({
+    label: PropTypes.string,
+    value: PropTypes.string,
+    // Add other properties if needed
+  }),
 };
 
 export default AddCategoriesModal;

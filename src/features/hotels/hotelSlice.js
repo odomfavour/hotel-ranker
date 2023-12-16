@@ -35,55 +35,6 @@ const initialState = loadState() || [
     image: hotel,
     rating: 3,
   },
-  {
-    id: 2,
-    name: 'Hotel B',
-    country: 'United Kingdom',
-    address: '456 High St, Townsville',
-    image: hotel,
-    rating: 2,
-  },
-  {
-    id: 3,
-    name: 'Hotel B',
-    country: 'United Kingdom',
-    address: '456 High St, Townsville',
-    image: hotel,
-    rating: 4,
-  },
-  {
-    id: 4,
-    name: 'Hotel B',
-    country: 'United Kingdom',
-    address: '456 High St, Townsville',
-    image: hotel,
-    rating: 4,
-  },
-  {
-    id: 5,
-    name: 'Hotel B',
-    country: 'United Kingdom',
-    address: '456 High St, Townsville',
-    image: hotel,
-    rating: 4,
-  },
-  {
-    id: 6,
-    name: 'Hotel B',
-    country: 'United Kingdom',
-    address: '456 High St, Townsville',
-    image: hotel,
-    rating: 4,
-  },
-  {
-    id: 7,
-    name: 'Hotel B',
-    country: 'United Kingdom',
-    address: '456 High St, Townsville',
-    image: hotel,
-    rating: 4,
-  },
-  // Add more hotels as needed
 ];
 
 const hotelsSlice = createSlice({
@@ -118,5 +69,6 @@ const hotelsSlice = createSlice({
   },
 });
 
-export const { addHotel, deleteHotel, updateHotel } = hotelsSlice.actions;
+export const { addHotel, deleteHotel, updateHotel, openHotelAddedModal } =
+  hotelsSlice.actions;
 export default hotelsSlice.reducer;

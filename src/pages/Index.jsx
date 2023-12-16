@@ -10,11 +10,14 @@ import { BsStarFill, BsStar } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { deleteHotel } from '../features/hotels/hotelSlice';
 import { deleteCategory } from '../features/categories/categoriesSlice';
+import { openGenModal, closeGenModal } from '../features/modal/modalSlice';
 import AddCategoriesModal from '../components/AddCategoriesModal';
 import MainLayout from '../layouts/MainLayout';
+import AlertModal from '../components/AlertModal';
 
 const Index = () => {
   const hotels = useSelector((state) => state.hotels);
+  const modal = useSelector((state) => state.modal);
   const categories = useSelector((state) => state.categories);
   const [openModal, setOpenModal] = useState(false);
   const [hotelToEdit, setHotelToEdit] = useState(null);
@@ -40,10 +43,11 @@ const Index = () => {
       return a.value.localeCompare(b.value);
     }
   });
+  console.log(hotels);
 
   const filteredHotels = hotels.filter((hotel) => {
     if (filter === 'all') return true;
-    return hotel.rating === filter;
+    return hotel.rating.toString() === filter;
   });
 
   const handleEditClick = (hotel) => {
@@ -110,7 +114,12 @@ const Index = () => {
                       >
                         <Box
                           sx={{
-                            backgroundImage: `url(${hotel.image})`,
+                            backgroundImage: `${
+                              hotel.image === ''
+                                ? `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5))`
+                                : `url(${hotel.image})`
+                            }`,
+                            color: '#ffffff',
                             backgroundSize: 'cover',
                             backgroundRepeat: 'no-repeat',
                             backgroundPosition: 'center',
@@ -120,8 +129,15 @@ const Index = () => {
                               '0 4px 6px rgba(0, 0, 0, 0.1), 0 6px 8px rgba(0, 0, 0, 0.1)',
                             width: '100%',
                             height: 200,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
                           }}
-                        />
+                        >
+                          {hotel?.image == '' && (
+                            <Typography>No Image set</Typography>
+                          )}
+                        </Box>
 
                         <Box sx={{ padding: '20px' }}>
                           <Box
@@ -129,10 +145,18 @@ const Index = () => {
                               display: 'flex',
                               justifyContent: 'space-between',
                               alignItems: 'center',
+                              flexDirection: {
+                                lg: 'row',
+                                md: 'row',
+                                sm: 'column-reverse',
+                                xs: 'column-reverse',
+                              },
                             }}
                           >
                             <Typography color="#24AB70" fontSize="14px">
-                              {hotel.address}
+                              {hotel.address.length > 25
+                                ? `${hotel.address.substring(0, 20)}...`
+                                : hotel.address}
                             </Typography>
 
                             <Box className="flex">
@@ -154,7 +178,9 @@ const Index = () => {
                             fontWeight="500"
                             color="#222222"
                           >
-                            {hotel.name}
+                            {hotel.name.length > 25
+                              ? `${hotel.name.substring(0, 20)}...`
+                              : hotel.name}
                           </Typography>
                           <Typography color="#22222290">
                             {hotel.country}
@@ -170,7 +196,15 @@ const Index = () => {
                               role="button"
                               fontSize="20px"
                               color="#22222298"
-                              onClick={() => dispatch(deleteHotel(hotel))}
+                              onClick={() => {
+                                dispatch(deleteHotel(hotel));
+                                dispatch(
+                                  openGenModal({
+                                    alertType: 'success',
+                                    alertMessage: 'Hotel Deleted Successfully',
+                                  })
+                                );
+                              }}
                               cursor="pointer"
                             />
                             <FaEdit
@@ -235,7 +269,15 @@ const Index = () => {
                         <FaTrash
                           role="button"
                           fontSize="20px"
-                          onClick={() => dispatch(deleteCategory(category))}
+                          onClick={() => {
+                            dispatch(deleteCategory(category));
+                            dispatch(
+                              openGenModal({
+                                alertType: 'success',
+                                alertMessage: 'Category Deleted Successfully',
+                              })
+                            );
+                          }}
                           cursor="pointer"
                         />
                         <FaEdit
@@ -263,14 +305,14 @@ const Index = () => {
           <Box
             sx={{
               position: 'fixed',
-              bottom: 10,
+              bottom: '60px',
               right: { xs: '20px', sm: '20px', md: '20px', lg: '20px' },
             }}
           >
             <Button
               sx={{
                 width: { lg: '80px', md: '80px', sm: '40px', xs: '40px' },
-                height: { lg: '80px', md: '80px', sm: '40px', xs: '40px' },
+                height: { lg: '80px', md: '80px', sm: '60px', xs: '60px' },
                 borderRadius: '50%',
                 background: '#24ab70',
                 boxShadow: '0px 8px 8px 0 rgba(34, 34, 34, 0.4)',
@@ -282,7 +324,10 @@ const Index = () => {
               onClick={() => setOpenModal(true)}
             >
               <FaPlus
-                style={{ fontSize: { md: '24px', sm: '18px' }, color: 'white' }}
+                style={{
+                  fontSize: { md: '24px', sm: '18px', xs: '12px' },
+                  color: 'white',
+                }}
               />
             </Button>
           </Box>
@@ -296,6 +341,12 @@ const Index = () => {
           showModal={openCategoryModal}
           handleClose={() => setOpenCategoryModal(false)}
           categoryToEdit={categoryToEdit}
+        />
+        <AlertModal
+          isOpen={modal.isOpen}
+          handleClose={() => dispatch(closeGenModal())}
+          alertType={modal.alertType}
+          alertMessage={modal.alertMessage}
         />
       </Box>
     </MainLayout>
