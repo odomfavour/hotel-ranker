@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import hotel from '../../images/hotel.jpg';
 
-// Load state from local storage or use initial state
 const loadState = () => {
   try {
     const serializedState = localStorage.getItem('hotels');
@@ -15,7 +14,6 @@ const loadState = () => {
   }
 };
 
-// Save state to local storage
 const saveState = (state) => {
   console.log(state);
   try {

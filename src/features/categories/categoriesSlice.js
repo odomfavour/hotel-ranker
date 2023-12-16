@@ -14,7 +14,6 @@ const loadState = () => {
   }
 };
 
-// Save state to local storage
 const saveState = (state) => {
   try {
     const serializedState = JSON.stringify(state);
