@@ -53,7 +53,7 @@ const DetailPage = () => {
           <img
             src={hotel.image}
             alt={hotel.name}
-            style={{ height: '500px', width: '100%', objectFit: 'cover' }}
+            style={{ height: '450px', width: '100%', objectFit: 'cover' }}
           />
 
           <Box>
