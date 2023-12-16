@@ -36,14 +36,13 @@ const Index = () => {
   ];
   filterOptions.sort((a, b) => {
     if (a.value === 'all') {
-      return -1; // 'View All' comes first
+      return -1;
     } else if (b.value === 'all') {
-      return 1; // 'View All' comes first
+      return 1;
     } else {
       return a.value.localeCompare(b.value);
     }
   });
-  console.log(hotels);
 
   const filteredHotels = hotels.filter((hotel) => {
     if (filter === 'all') return true;
